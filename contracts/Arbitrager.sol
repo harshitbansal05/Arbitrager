@@ -16,7 +16,14 @@ contract Arbitrager {
     
     receive() external payable {}
 
-    event ProfitMaximizingTrade(bool aToB, uint256 amountIn );
+    event ProfitMaximizingTrade(
+        uint256 reservesExchangeATokenA, 
+        uint256 reservesExchangeATokenB, 
+        uint256 reservesExchangeBTokenA, 
+        uint256 reservesExchangeBTokenB,
+        bool aToB, 
+        uint256 amountIn 
+    );
 
     function computeProfitMaximizingTrade(
         uint256 reservesExchangeATokenA,
@@ -118,9 +125,16 @@ contract Arbitrager {
             console.log("Exchange A Swap Direction:", aToB ? "Token A to Token B" : "Token B to Token A");
             console.log("Exchange B Swap Direction:", aToB ? "Token B to Token A" : "Token A to Token B");
             console.log("Tokens to be swapped at Exchange A for maximum profit:", amountIn);
+            // Emit event
+            emit ProfitMaximizingTrade(
+                reservesExchangeATokenA,
+                reservesExchangeATokenB,
+                reservesExchangeBTokenA,
+                reservesExchangeBTokenB,
+                aToB, 
+                amountIn
+            );
         }
-        // Emit event
-        emit ProfitMaximizingTrade(aToB, amountIn);
         bytes memory data = abi.encode(exchangeAFactory, exchangeBFactory, poolAddressA, poolAddressB);
         if(amountIn != 0) _flashSwap(tokenA, tokenB, flashLoanContractAddress, aToB, amountIn, data, isPoolAddress);
     }

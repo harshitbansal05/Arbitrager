@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+const { alchemyApiKey, privateKey } = require("./secrets.json");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -23,6 +24,20 @@ module.exports = {
         version: "0.8.4",
         settings: {},
       },
+      {
+        version: "0.5.16",
+      }
     ],
+  },
+  defaultNetwork: "hardhat",
+  networks: {
+    hardhat: {
+    },
+    rinkeby: {
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${alchemyApiKey}`,
+      accounts: [ privateKey ],
+      gas: 2100000,
+      gasPrice: 8000000000,
+    }
   },
 };
