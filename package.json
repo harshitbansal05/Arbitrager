@@ -19,5 +19,8 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.5.2",
     "hardhat": "^2.7.0"
+  },
+  "dependencies": {
+    "mocha-skip-if": "^0.0.3"
   }
 }
