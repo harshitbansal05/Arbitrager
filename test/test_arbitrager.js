@@ -1,15 +1,16 @@
 require("mocha-skip-if");
 const { expect } = require("chai");
+const { ethers, network } = requiure("hardhat");
 const { deployMocks } = require("../scripts/helpful_scripts");
 
 skip.if(network.name != "hardhat").
 describe("Arbitrager", function () {
   it("Should arbitrage once it sees the price difference!", async function () {
-    const Arbitrager = await hre.ethers.getContractFactory("Arbitrager");
+    const Arbitrager = await ethers.getContractFactory("Arbitrager");
     const arbitrager = await Arbitrager.deploy();
     await arbitrager.deployed();
 
-    const FlashSwap = await hre.ethers.getContractFactory("FlashSwap");
+    const FlashSwap = await ethers.getContractFactory("FlashSwap");
     const flashSwap = await FlashSwap.deploy();
     await flashSwap.deployed();
 

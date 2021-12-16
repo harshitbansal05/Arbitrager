@@ -1,8 +1,3 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 const { ethers, network } = require("hardhat");
 const { config } = require("../config");
 const { deployMocks } = require("../scripts/helpful_scripts");
@@ -10,20 +5,13 @@ const { deployMocks } = require("../scripts/helpful_scripts");
 const logEvents = true;
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to   make sure everything is compiled
-  // await hre.run('compile');
-
   // We get the contract to deploy
-  const FlashSwap = await hre.ethers.getContractFactory("FlashSwap");
+  const FlashSwap = await ethers.getContractFactory("FlashSwap");
   const flashSwap = await FlashSwap.deploy();
   await flashSwap.deployed();
   console.log("FlashSwap deployed to:", flashSwap.address);
 
-  const Arbitrager = await hre.ethers.getContractFactory("Arbitrager");
+  const Arbitrager = await ethers.getContractFactory("Arbitrager");
   const arbitrager = await Arbitrager.deploy();
   await arbitrager.deployed();
   console.log("Arbitrager deployed to:", arbitrager.address);
@@ -49,9 +37,9 @@ async function main() {
     const sushiswapDaiWethPoolAddress = config["daiWethPoolAddress"]["sushiswap"][network.name];
 
     // GET DAI, WETH contracts
-    const ERC20 = await hre.ethers.getContractFactory("ERC20");
-    const dai = await ERC20.attach(daiAddress);
-    const weth = await ERC20.attach(wethAddress);
+    const ERC20 = await ethers.getContractFactory("ERC20");
+    const dai = ERC20.attach(daiAddress);
+    const weth = ERC20.attach(wethAddress);
 
     // Get initial DAI, WETH balance of arbitrager
     const initialDaiBalance = await dai.balanceOf(arbitrager.address);
@@ -121,8 +109,6 @@ async function main() {
   }
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main()
   .then(() => process.exit(0))
   .catch((error) => {

@@ -7,11 +7,11 @@ exports.getDaiWethPoolAddress = async function () {
   const uniswapV2FactoryAddress = config["factoryAddress"]["uniswap"][network.name];
   const sushiswapV2FactoryAddress = config["factoryAddress"]["sushiswap"][network.name];
 
-  const UniswapFactory = await hre.ethers.getContractFactory("MockUniswapV2Factory");
-  const uniswapFactory = await UniswapFactory.attach(uniswapV2FactoryAddress);
+  const UniswapFactory = await ethers.getContractFactory("MockUniswapV2Factory");
+  const uniswapFactory = UniswapFactory.attach(uniswapV2FactoryAddress);
   const uniswapDaiWethPoolAddress = await uniswapFactory.getPair(daiAddress, wethAddress);
 
-  const sushiswapFactory = await UniswapFactory.attach(sushiswapV2FactoryAddress);
+  const sushiswapFactory = UniswapFactory.attach(sushiswapV2FactoryAddress);
   const sushiswapDaiWethPoolAddress = await sushiswapFactory.getPair(daiAddress, wethAddress);
   return [uniswapDaiWethPoolAddress, sushiswapDaiWethPoolAddress];
 }
@@ -22,7 +22,7 @@ exports.deployMocks = async function () {
   const account = [accounts[0].address];
 
   // Deploy mock DAI, WETH tokens
-  const MockERC20 = await hre.ethers.getContractFactory("MockERC20");
+  const MockERC20 = await ethers.getContractFactory("MockERC20");
   const dai = await MockERC20.deploy("Mock DAI", "DAI", account[0], 10000000000);
   await dai.deployed();
   console.log("DAI deployed to:", dai.address);
@@ -32,7 +32,7 @@ exports.deployMocks = async function () {
   console.log("WETH deployed to:", weth.address);
 
   // Deploy mock Uniswap, Sushiswap factory
-  const MockUniswapV2Factory = await hre.ethers.getContractFactory("MockUniswapV2Factory");
+  const MockUniswapV2Factory = await ethers.getContractFactory("MockUniswapV2Factory");
   const mockUniswapV2Factory = await MockUniswapV2Factory.deploy(account[0]);
   await mockUniswapV2Factory.deployed();
   console.log("MockUniswapV2Factory deployed to:", mockUniswapV2Factory.address);
@@ -63,12 +63,12 @@ exports.deployMocks = async function () {
 
   // Mint LP tokens
   await mockUniswapV2Factory.setFeeTo(mockUniswapV2Factory.address);
-  const UniswapV2Pair = await hre.ethers.getContractFactory("UniswapV2Pair");
-  const uniswapDaiWethPool = await UniswapV2Pair.attach(uniswapDaiWethPoolAddress);
+  const UniswapV2Pair = await ethers.getContractFactory("UniswapV2Pair");
+  const uniswapDaiWethPool = UniswapV2Pair.attach(uniswapDaiWethPoolAddress);
   await uniswapDaiWethPool.mint(account[0]);
 
   await mockSushiswapV2Factory.setFeeTo(mockSushiswapV2Factory.address);
-  const sushiswapDaiWethPool = await UniswapV2Pair.attach(sushiswapDaiWethPoolAddress);
+  const sushiswapDaiWethPool = UniswapV2Pair.attach(sushiswapDaiWethPoolAddress);
   await sushiswapDaiWethPool.mint(account[0]);
 
   return [dai, weth, mockUniswapV2Factory, mockSushiswapV2Factory, uniswapDaiWethPoolAddress, sushiswapDaiWethPoolAddress];
