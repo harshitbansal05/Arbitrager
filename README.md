@@ -1,6 +1,6 @@
 # Arbitrager
 
-This is an implementation of a basic arbitrager between any two UniswapV2 implementations like Uniswap, Sushiswap, Shibaswap, etc. The main contract is Arbitrager, with the function `aritrage`. 
+This is an implementation of a basic arbitrager between any two UniswapV2 implementations like Uniswap, Sushiswap, Shibaswap, etc. The main contract is Arbitrager, with the function `arbitrage`. 
 
 ### Deploy the contract:
 
@@ -17,7 +17,7 @@ If the deployment network is rinkeby, the account's private key and the alchemy 
 
 ### Deploy the bot:
 
-The contract Arbitrager has a function `computeProfitMaximizingTrade` which takes two UniswapV2 pool addresses as input paramters, and checks if there is an arbitrage possibility. If present, it undergoes the arbitrage using flash swap, in the same transaction. It also emits an event `ProfitMaximizingTrade` which has details regarding the swap direction and amount of tokens swapped (if arbitrage is executed). The bot can be started by `npx hardhat run scripts/subscribe.js` or simply
+The contract Arbitrager has a function `computeProfitMaximizingTrade` which takes two UniswapV2 pool addresses as input parameters, and checks if there is an arbitrage possibility. If present, it undergoes the arbitrage using flash swap, in the same transaction. It also emits an event `ProfitMaximizingTrade` which has details regarding the swap direction and amount of tokens swapped (if arbitrage is executed). The bot can be started by `npx hardhat run scripts/subscribe.js` or simply
 
 ```
 npm start
