@@ -19,11 +19,11 @@ async function main() {
   const [owner] = await ethers.getSigners();
   await owner.sendTransaction({
     to: flashSwap.address,
-    value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
+    value: ethers.utils.parseEther("0.1"), // Sends exactly 0.1 ether
   });
   await owner.sendTransaction({
     to: arbitrager.address,
-    value: ethers.utils.parseEther("1.0"), // Sends exactly 1.0 ether
+    value: ethers.utils.parseEther("0.1"), // Sends exactly 0.1 ether
   });
   console.log("Sent ethers to contracts");
   

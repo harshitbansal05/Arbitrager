@@ -1,6 +1,6 @@
 require("mocha-skip-if");
 const { expect } = require("chai");
-const { ethers, network } = requiure("hardhat");
+const { ethers, network } = require("hardhat");
 const { deployMocks } = require("../scripts/helpful_scripts");
 
 skip.if(network.name != "hardhat").
